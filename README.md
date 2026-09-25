@@ -152,7 +152,22 @@ Test categories and their modules: [`documentation/specs/18_testing_strategy.md`
 Markers: `unit`, `integration`, `e2e`, `live_llm` (real API, excluded by default), `hidden`.
 
 ## Assumptions
-*(to be completed in P12-S3)*
+The competition organizers were not contacted; the following are **team decisions** (also recorded in the RTM sheet
+"Organizer Questions"):
+
+1. The rule matrix and all configuration are managed from the Admin UI (add, edit, delete, import); hidden
+   evaluation data never requires code changes.
+2. Pipeline 2 is rules-only: no machine-learning model of any kind.
+3. The format of unseen complaints is unknown, so batch import supports CSV, TSV, XLSX, JSON and JSONL with column
+   mapping.
+4. Design and planning within the five competition days is allowed.
+5. No embeddings in Pipeline 2; knowledge-base retrieval uses BM25.
+6. The GenAI provider is an OpenAI model accessed through the CommandCode OpenAI-compatible gateway
+   ([ADR-007](documentation/adr/ADR-007-genai-gateway.md)); the exact model id is recorded before slice P01-S6.
+7. The team has four members; there is no required format for the contribution record, so it is kept in
+   `documentation/team_contribution.md`.
+
+*(further assumptions added in P12-S3)*
 
 ## Limitations
 *(to be completed in P12-S3)*
