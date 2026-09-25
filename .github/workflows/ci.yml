@@ -1,0 +1,38 @@
+# Continuous integration (spec 19): ruff -> mypy -> pytest (not live_llm) with coverage
+# -> dataset validation (once the dataset exists) -> pip-audit.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+      - name: Lint (ruff)
+        run: |
+          python -m ruff check .
+          python -m ruff format --check .
+      - name: Type check (mypy)
+        run: python -m mypy .
+      - name: Tests
+        run: python -m pytest -m "not live_llm" --cov --cov-report=term
+      - name: Validate dataset
+        if: hashFiles('scripts/data_gen/validate_dataset.py') != ''
+        run: python scripts/data_gen/validate_dataset.py
+      - name: Dependency audit
+        run: python -m pip_audit -r requirements.txt
