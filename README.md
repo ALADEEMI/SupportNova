@@ -113,7 +113,11 @@ Set `DATABASE_URL` (SQLite for local use, PostgreSQL in deployment), then run `m
 `make test` runs all tests except those calling the real GenAI API; `make check` runs lint, type check and tests.
 
 ### Troubleshooting
-*(to be completed in P12)*
+- **Windows: `pip` fails with `OSError: No such file or directory` during `make setup`.** The checkout path is too
+  deep for the 260-character Windows path limit. Clone to a shorter path (e.g. `C:\dev\SupportNova`) or enable
+  Windows long-path support.
+
+*(further entries added in P12)*
 
 ## Usage
 *(each flow is documented in P12-S3)*
