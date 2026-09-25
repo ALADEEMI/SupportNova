@@ -1,0 +1,32 @@
+# Runtime dependencies (pinned). Technology choices: documentation/adr/ADR-001-technology-stack.md
+# UI
+streamlit==1.64.0
+plotly==7.1.0
+# Optional REST API
+fastapi==0.141.1
+uvicorn==0.54.0
+# Persistence
+SQLAlchemy==2.1.0
+alembic==1.20.0
+psycopg[binary]==3.3.6
+# Validation and configuration
+pydantic==2.13.5
+pydantic-settings==2.15.0
+jsonschema==4.26.0
+PyYAML==6.0.3
+# Documents
+pymupdf==1.28.2
+python-docx==1.2.0
+# Retrieval and deterministic similarity
+rank-bm25==0.2.2
+RapidFuzz==3.14.6
+# GenAI (OpenAI-compatible gateway, ADR-007)
+openai==3.19.2
+# Data processing and exports
+pandas==3.0.6
+numpy==2.5.3
+openpyxl==3.1.5
+reportlab==5.0.1
+Jinja2==3.1.6
+# Authentication
+bcrypt==5.0.0
