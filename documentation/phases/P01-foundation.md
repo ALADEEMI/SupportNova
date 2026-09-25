@@ -19,6 +19,7 @@
 - **SRS:** Steps 5–7, 49, 59; NFR-2 · **Read:** spec 03, ADR-002, ADR-015
 - **Tasks:** SQLAlchemy models for all tables in spec 03; Alembic initial migration; session management; repositories (typed);
   append-only guard for audit_log (repository has no update/delete; PostgreSQL trigger in migration).
+  Register the `app_errors` ErrorSink with `set_error_sink` (hook added in P01-S2).
 - **Acceptance:** `alembic upgrade head` works on SQLite and PostgreSQL; indexes present; audit update/delete impossible via repository and raises at DB level on PostgreSQL.
 - **Tests:** test_models_roundtrip.py, test_audit_append_only.py
 
