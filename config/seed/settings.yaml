@@ -1,0 +1,31 @@
+# Default settings (Admin → Configuration). Secrets are NOT here (environment only).
+genai:
+  provider: openai
+  base_url_env: OPENAI_BASE_URL        # value comes from environment
+  model: "<set after self-test>"
+  temperature: 0
+  timeout_seconds: 18
+  max_retries: 2
+  use_structured_output: auto          # auto | json_schema | json_object
+  default_tone: PROFESSIONAL
+retrieval: {top_k: 8, max_chunks_per_doc: 3, max_context_chars: 12000, min_score: 0.5}
+rule_engine: {tie_margin: 1, min_secondary_score: 2}
+verification:
+  pass_threshold: 85
+  weights: {critical: 3, major: 2, minor: 1}
+  critical_checks: [SCHEMA_VALID, CATEGORY_MATCH, DEPARTMENT_MATCH, URGENCY_MATCH, ESCALATION_MANDATORY, POLICY_ID_VALID, POLICY_IN_FORCE, REQUIRED_ACTIONS_PRESENT, PROHIBITED_ACTIONS_ABSENT, REFUND_ELIGIBILITY, REPLACEMENT_ELIGIBILITY, COMPENSATION_PERMITTED, UNSUPPORTED_PROMISES, HALLUCINATED_CLAIMS, INJECTION_HANDLED]
+  always_review_categories: []
+intake: {min_chars: 30, min_words: 6, max_chars: 5000, required_form_fields: [title, description], near_duplicate_ratio: 88, duplicate_lookback_days: 30, reopen_window_days: 14}
+uploads:
+  kb_types: [pdf, docx, txt, md]
+  attachment_types: [pdf, docx, jpg, png]
+  complaint_file_types: [pdf, docx, txt, md, eml]
+  batch_types: [csv, tsv, xlsx, json, jsonl]
+  rule_import_types: [csv, xlsx, yaml]
+  max_file_mb: 10
+  max_attachments: 5
+documents: {doc_id_regex: "^[A-Z]{2,5}-[A-Z]{2,5}-\\d{3}$", near_duplicate_ratio: 92}
+sla: {risk_threshold_percent: 75}
+trends: {window_days: 7, min_count: 5, growth_threshold_percent: 50, recurring_product_min: 4}
+security: {max_failed_logins: 5, lockout_minutes: 15, session_idle_minutes: 30}
+batch: {analysis_concurrency: 4}

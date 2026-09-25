@@ -1,0 +1,157 @@
+# SupportNova seed configuration — loaded once by `make seed` into the database.
+# After seeding, the DATABASE is the source of truth; edit from Admin → Configuration.
+# Codes are stable identifiers (UPPER_SNAKE); names are display labels.
+
+organization:
+  name: Zephyra Electronics
+  currency: USD
+
+categories:
+  - {code: DELIVERY, name: Delivery}
+  - {code: PRODUCT_DEFECT, name: Product Defect}
+  - {code: BILLING, name: Billing}
+  - {code: REFUND, name: Refund}
+  - {code: RETURNS_REPLACEMENT, name: Returns & Replacement}
+  - {code: WARRANTY, name: Warranty}
+  - {code: SUBSCRIPTION, name: Subscription}
+  - {code: ACCOUNT_SECURITY, name: Account & Security}
+  - {code: PRIVACY, name: Privacy}
+  - {code: PRODUCT_SAFETY, name: Product Safety}
+  - {code: TECHNICAL_SUPPORT, name: Technical Support}
+  - {code: SERVICE_QUALITY, name: Service Quality}
+
+subcategories:   # required_fields feed missing-information detection (Step 42)
+  - {code: DELAYED_DELIVERY, category: DELIVERY, name: Delayed Delivery, required_fields: [order_ref]}
+  - {code: LOST_SHIPMENT, category: DELIVERY, name: Lost Shipment, required_fields: [order_ref]}
+  - {code: WRONG_ITEM, category: DELIVERY, name: Wrong Item Delivered, required_fields: [order_ref, product]}
+  - {code: DAMAGED_IN_TRANSIT, category: DELIVERY, name: Damaged in Transit, required_fields: [order_ref, evidence]}
+  - {code: DEAD_ON_ARRIVAL, category: PRODUCT_DEFECT, name: Dead on Arrival, required_fields: [order_ref, product]}
+  - {code: MALFUNCTION_AFTER_USE, category: PRODUCT_DEFECT, name: Malfunction After Use, required_fields: [product, problem_description]}
+  - {code: DUPLICATE_CHARGE, category: BILLING, name: Duplicate Charge, required_fields: [transaction_ref]}
+  - {code: INCORRECT_CHARGE, category: BILLING, name: Incorrect Charge, required_fields: [transaction_ref]}
+  - {code: INSTALLMENT_ISSUE, category: BILLING, name: Installment Issue, required_fields: [order_ref]}
+  - {code: REFUND_DELAY, category: REFUND, name: Refund Delay, required_fields: [order_ref]}
+  - {code: REFUND_DENIAL_DISPUTE, category: REFUND, name: Refund Denial Dispute, required_fields: [order_ref]}
+  - {code: RETURN_REQUEST, category: RETURNS_REPLACEMENT, name: Return Request, required_fields: [order_ref, product]}
+  - {code: REPLACEMENT_REQUEST, category: RETURNS_REPLACEMENT, name: Replacement Request, required_fields: [order_ref, product]}
+  - {code: WARRANTY_CLAIM, category: WARRANTY, name: Warranty Claim, required_fields: [order_ref, product, evidence]}
+  - {code: REPAIR_DELAY, category: WARRANTY, name: Repair Delay, required_fields: [order_ref]}
+  - {code: UNWANTED_RENEWAL, category: SUBSCRIPTION, name: Unwanted Renewal, required_fields: [transaction_ref]}
+  - {code: CANCELLATION_ISSUE, category: SUBSCRIPTION, name: Cancellation Issue, required_fields: []}
+  - {code: ACCOUNT_TAKEOVER, category: ACCOUNT_SECURITY, name: Account Takeover, required_fields: []}
+  - {code: ACCESS_ISSUE, category: ACCOUNT_SECURITY, name: Access Issue, required_fields: []}
+  - {code: DATA_EXPOSURE, category: PRIVACY, name: Data Exposure, required_fields: []}
+  - {code: RECORDING_PRIVACY, category: PRIVACY, name: Recording Privacy Concern, required_fields: [product]}
+  - {code: OVERHEATING_FIRE_RISK, category: PRODUCT_SAFETY, name: Overheating / Fire Risk, required_fields: [product]}
+  - {code: INJURY_ELECTRIC_SHOCK, category: PRODUCT_SAFETY, name: Injury / Electric Shock, required_fields: [product]}
+  - {code: SETUP_CONNECTIVITY, category: TECHNICAL_SUPPORT, name: Setup & Connectivity, required_fields: [product]}
+  - {code: APP_FIRMWARE, category: TECHNICAL_SUPPORT, name: App / Firmware Issue, required_fields: [product]}
+  - {code: STAFF_MISCONDUCT, category: SERVICE_QUALITY, name: Staff Misconduct, required_fields: []}
+  - {code: POOR_SUPPORT_EXPERIENCE, category: SERVICE_QUALITY, name: Poor Support Experience, required_fields: []}
+
+departments:
+  - {code: LOGISTICS, name: Logistics}
+  - {code: TECHNICAL_SUPPORT, name: Technical Support}
+  - {code: BILLING_PAYMENTS, name: Billing & Payments}
+  - {code: RETURNS_REPLACEMENTS, name: Returns & Replacements}
+  - {code: WARRANTY_REPAIRS, name: Warranty & Repairs}
+  - {code: SUBSCRIPTIONS, name: Subscriptions}
+  - {code: ACCOUNT_SECURITY, name: Account Security}
+  - {code: PRIVACY_COMPLIANCE, name: Privacy & Compliance}
+  - {code: PRODUCT_SAFETY, name: Product Safety}
+  - {code: CUSTOMER_RELATIONS, name: Customer Relations}
+  - {code: MANAGEMENT_ESCALATIONS, name: Management Escalations}
+
+customer_types: [{code: STANDARD, name: Standard}, {code: PLUS, name: Plus}, {code: VIP, name: VIP}, {code: BUSINESS, name: Business}]
+
+channels:
+  complaint: [WEB_FORM, EMAIL, CHAT, MESSAGING, CUSTOMER_PORTAL, UPLOADED_COMPLAINT]
+  contact: [EMAIL, PHONE, SMS, CHAT, WEB_PORTAL]
+
+resolution_types: [REFUND, REPLACEMENT, REPAIR, COMPENSATION, CANCELLATION, INFORMATION, APOLOGY, OTHER]
+
+vocab:
+  sentiment: [POSITIVE, NEUTRAL, NEGATIVE, STRONGLY_NEGATIVE]
+  emotion: [FRUSTRATION, ANGER, DISAPPOINTMENT, CONFUSION, URGENCY]
+  tone: [PROFESSIONAL, EMPATHETIC, CONCISE, FORMAL]
+  follow_up_type: [REQUEST_INFO, RESOLUTION_CONFIRMATION, REFUND_STATUS, REPLACEMENT_STATUS, ESCALATION_ACK, CLOSURE_CONFIRMATION]
+  applicability: [APPLICABLE, CONDITIONALLY_APPLICABLE, NOT_APPLICABLE, OUTDATED]
+
+urgency_levels: [{code: LOW, rank: 1}, {code: MEDIUM, rank: 2}, {code: HIGH, rank: 3}, {code: CRITICAL, rank: 4}]
+priorities: [{code: P3, label: P3 – Low, rank: 1}, {code: P2, label: P2 – Medium, rank: 2}, {code: P1, label: P1 – High, rank: 3}, {code: P0, label: P0 – Critical, rank: 4}]
+priority_rules: {LOW: P3, MEDIUM: P2, HIGH: P1, CRITICAL: P0}
+
+escalation_levels:
+  - {code: NONE, name: No Escalation, rank: 0}
+  - {code: SUPERVISOR_REVIEW, name: Supervisor Review, rank: 1}
+  - {code: DEPARTMENT_MANAGER, name: Department Manager, rank: 2}
+  - {code: SPECIALIST_TEAM, name: Specialist Team, rank: 3}
+  - {code: COMPLIANCE_REVIEW, name: Compliance Review, rank: 4}
+  - {code: CRITICAL_MANAGEMENT, name: Critical Management Escalation, rank: 5}
+
+sla_rules:   # calendar hours (documented assumption)
+  - {priority: P0, response_hours: 1, resolution_hours: 24}
+  - {priority: P1, response_hours: 4, resolution_hours: 48}
+  - {priority: P2, response_hours: 24, resolution_hours: 120}
+  - {priority: P3, response_hours: 48, resolution_hours: 240}
+
+statuses: [NEW, ANALYZED, ASSIGNED, IN_PROGRESS, AWAITING_CUSTOMER, ESCALATED, RESOLVED, CLOSED, REOPENED]
+status_transitions:
+  NEW: [ANALYZED]
+  ANALYZED: [ASSIGNED, ESCALATED]
+  ASSIGNED: [IN_PROGRESS, ESCALATED]
+  IN_PROGRESS: [AWAITING_CUSTOMER, ESCALATED, RESOLVED]
+  AWAITING_CUSTOMER: [IN_PROGRESS]
+  ESCALATED: [IN_PROGRESS, RESOLVED]
+  RESOLVED: [CLOSED, REOPENED]
+  CLOSED: [REOPENED]
+  REOPENED: [IN_PROGRESS, ESCALATED]
+
+actions:   # requires_eligibility → checked by eligibility rules; promise_lexicon → unsupported-promise detection
+  - {code: ACKNOWLEDGE_COMPLAINT}
+  - {code: APOLOGIZE}
+  - {code: VERIFY_ACCOUNT}
+  - {code: VERIFY_ORDER}
+  - {code: CHECK_SHIPMENT_STATUS}
+  - {code: CONFIRM_DELIVERY_DATE}
+  - {code: OPEN_CARRIER_INVESTIGATION}
+  - {code: ARRANGE_REDELIVERY}
+  - {code: VERIFY_TRANSACTION}
+  - {code: VERIFY_DUPLICATE_CHARGE}
+  - {code: REVERSE_DUPLICATE_CHARGE, requires_eligibility: true, promise_lexicon: promise_refund}
+  - {code: CORRECT_BILLING}
+  - {code: ISSUE_REFUND, requires_eligibility: true, promise_lexicon: promise_refund}
+  - {code: ISSUE_REPLACEMENT, requires_eligibility: true, promise_lexicon: promise_replacement}
+  - {code: ARRANGE_RETURN}
+  - {code: SCHEDULE_REPAIR}
+  - {code: CHECK_WARRANTY_STATUS}
+  - {code: REQUEST_EVIDENCE}
+  - {code: REQUEST_MISSING_INFORMATION}
+  - {code: ADVISE_STOP_USE}
+  - {code: OPEN_SAFETY_CASE}
+  - {code: ARRANGE_INSPECTION}
+  - {code: LOCK_ACCOUNT}
+  - {code: RESET_CREDENTIALS}
+  - {code: OPEN_SECURITY_INVESTIGATION}
+  - {code: OPEN_PRIVACY_INCIDENT}
+  - {code: NOTIFY_COMPLIANCE}
+  - {code: CANCEL_SUBSCRIPTION}
+  - {code: REFUND_SUBSCRIPTION_RENEWAL, requires_eligibility: true, promise_lexicon: promise_refund}
+  - {code: TROUBLESHOOT_SETUP}
+  - {code: ESCALATE_TO_SPECIALIST}
+  - {code: CONSULT_SUPERVISOR}
+  - {code: OFFER_GOODWILL_CREDIT, requires_eligibility: true, promise_lexicon: promise_compensation}
+  - {code: WAIVE_FEE, requires_eligibility: true, promise_lexicon: promise_compensation}
+  - {code: INVESTIGATE_STAFF_CONDUCT}
+  - {code: SCHEDULE_FOLLOW_UP}
+  # prohibited-type actions (appear in rules' prohibited_actions; detected if the model emits them)
+  - {code: PROMISE_REFUND_BEFORE_INSPECTION}
+  - {code: PROMISE_REFUND_BEFORE_VERIFICATION}
+  - {code: ADVISE_CONTINUED_USE}
+  - {code: ADMIT_LIABILITY}
+  - {code: SHARE_CUSTOMER_DATA}
+  - {code: GRANT_POLICY_EXCEPTION}
+  - {code: COMMIT_UNSUPPORTED_DEADLINE}
+
+doc_categories: [POLICY, SLA, SOP, ESCALATION_PROCEDURE, ROUTING_RULES, GUIDELINES, RESPONSE_TEMPLATES, FAQ]
+precedence: [POLICY, SLA, SOP, ESCALATION_PROCEDURE, ROUTING_RULES, GUIDELINES, RESPONSE_TEMPLATES, FAQ]   # highest first (ADR-009)

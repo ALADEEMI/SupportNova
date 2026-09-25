@@ -1,0 +1,22 @@
+# Starter lexicons (extend in Admin → Lexicons). Matching is case-insensitive with word boundaries.
+lexicons:
+  overheating_terms: [overheat, overheating, very hot, too hot, burning smell, smell of burning, smoke, smoking, sparks, sparking, swollen battery, battery swelling, melted, caught fire, fire]
+  injury_terms: [injured, injury, burned my, burnt my, electric shock, shocked me, bleeding, hospital, cut my]
+  child_terms: [my child, my son, my daughter, my kid, toddler, baby]
+  legal_threat_terms: [lawyer, attorney, legal action, sue, lawsuit, court, consumer protection, regulator, small claims]
+  media_threat_terms: [go to the press, journalist, social media, post online, viral]
+  data_exposure_terms: [someone else's order, another customer's, my data was, data leak, leaked, exposed my, saw other people's, personal information visible]
+  account_takeover_terms: [hacked, account was hacked, someone logged in, unauthorized login, password changed without, orders i did not place, didn't place]
+  anger_terms: [furious, outraged, disgusting, ridiculous, worst, unacceptable, angry, pathetic, scam, useless]
+  injection_patterns_regex:
+    - "ignore (all |your |the )?(previous |prior )?(rules|instructions|policies)"
+    - "(you are|act as) (now )?(an? )?(admin|administrator|system)"
+    - "system prompt"
+    - "(approve|grant) (my |a |the )?(full )?(refund|compensation|exception)"
+    - "as (an|the) (admin|administrator|manager)"
+    - "override (the )?(policy|rules)"
+  promise_refund: [we will refund, you will be refunded, refund has been approved, full refund, money back, refund is guaranteed]
+  promise_replacement: [we will replace, replacement has been approved, send you a new, free replacement]
+  promise_compensation: [compensate you, compensation of, credit of, voucher, gift card, we will waive]
+  promise_generic: [guarantee, guaranteed, we promise, definitely by, no later than]
+  negation_window: [cannot, can't, unable to, not able to, do not, don't, won't, no]

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "complaint_intel",
+  "title": "SupportNova Complaint Intelligence (GenAI output)",
+  "description": "Single source of truth for Pipeline 1 output. Properties with x-enum-source receive their enum from configuration at runtime (ADR-005). Bump schema_version on any change.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","complaint_id","primary_issue","secondary_issues","sentiment","emotion_indicators","urgency","urgency_rationale","priority","entities","department","supporting_departments","policy_references","resolution_steps","refund_assessment","replacement_assessment","compensation","escalation","escalation_notes","response_type","tone","customer_response","follow_up","missing_information","clarification_questions","complaint_summary","agent_guidance","injection_suspected","injection_notes"],
+  "$defs": {
+    "issue": {
+      "type": "object", "additionalProperties": false,
+      "required": ["summary","category","subcategory"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 3},
+        "category": {"type": "string", "x-enum-source": "categories"},
+        "subcategory": {"type": "string", "x-enum-source": "subcategories"}
+      }
+    },
+    "assessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requested","recommendation","rationale"],
+      "properties": {
+        "requested": {"type": "boolean"},
+        "recommendation": {"type": "string", "enum": ["eligible","not_eligible","requires_verification","not_applicable"]},
+        "rationale": {"type": "string"}
+      }
+    }
+  },
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "complaint_id": {"type": "string"},
+    "primary_issue": {"$ref": "#/$defs/issue"},
+    "secondary_issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+    "sentiment": {"type": "string", "x-enum-source": "sentiment"},
+    "emotion_indicators": {"type": "array", "items": {"type": "string", "x-enum-source": "emotion"}},
+    "urgency": {"type": "string", "x-enum-source": "urgency_levels"},
+    "urgency_rationale": {"type": "string"},
+    "priority": {"type": "string", "x-enum-source": "priorities"},
+    "entities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["products","order_refs","transaction_refs","dates","amounts","locations","complaint_refs","departments_mentioned"],
+      "properties": {
+        "products": {"type": "array", "items": {"type": "string"}},
+        "order_refs": {"type": "array", "items": {"type": "string"}},
+        "transaction_refs": {"type": "array", "items": {"type": "string"}},
+        "dates": {"type": "array", "items": {"type": "string"}},
+        "amounts": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["value","currency"], "properties": {"value": {"type": "number"}, "currency": {"type": "string"}}}},
+        "locations": {"type": "array", "items": {"type": "string"}},
+        "complaint_refs": {"type": "array", "items": {"type": "string"}},
+        "departments_mentioned": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "department": {"type": "string", "x-enum-source": "departments"},
+    "supporting_departments": {"type": "array", "items": {"type": "string", "x-enum-source": "departments"}},
+    "policy_references": {
+      "type": "array",
+      "items": {"type": "object", "additionalProperties": false, "required": ["policy_id","section","version","relevance"],
+        "properties": {"policy_id": {"type": "string"}, "section": {"type": "string"}, "version": {"type": "string"}, "relevance": {"type": "string"}}}
+    },
+    "resolution_steps": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "object", "additionalProperties": false, "required": ["action_code","description","policy_id","section"],
+        "properties": {"action_code": {"type": "string", "x-enum-source": "actions"}, "description": {"type": "string"}, "policy_id": {"type": ["string","null"]}, "section": {"type": ["string","null"]}}}
+    },
+    "refund_assessment": {"$ref": "#/$defs/assessment"},
+    "replacement_assessment": {"$ref": "#/$defs/assessment"},
+    "compensation": {
+      "type": "object", "additionalProperties": false, "required": ["recommended","type","amount","rationale"],
+      "properties": {"recommended": {"type": "boolean"}, "type": {"type": ["string","null"]}, "amount": {"type": ["number","null"]}, "rationale": {"type": "string"}}
+    },
+    "escalation": {
+      "type": "object", "additionalProperties": false, "required": ["required","level","reason","triggers"],
+      "properties": {"required": {"type": "boolean"}, "level": {"type": "string", "x-enum-source": "escalation_levels"}, "reason": {"type": "string"}, "triggers": {"type": "array", "items": {"type": "string"}}}
+    },
+    "escalation_notes": {
+      "type": ["object","null"], "additionalProperties": false,
+      "required": ["complaint_summary","key_facts","reason","actions_already_taken","relevant_policy","required_next_action"],
+      "properties": {"complaint_summary": {"type": "string"}, "key_facts": {"type": "array", "items": {"type": "string"}}, "reason": {"type": "string"}, "actions_already_taken": {"type": "array", "items": {"type": "string"}}, "relevant_policy": {"type": "string"}, "required_next_action": {"type": "string"}}
+    },
+    "response_type": {"type": "string"},
+    "tone": {"type": "string", "x-enum-source": "tones"},
+    "customer_response": {"type": "string", "minLength": 40},
+    "follow_up": {
+      "type": "object", "additionalProperties": false, "required": ["required","type","message","suggested_after_hours"],
+      "properties": {"required": {"type": "boolean"}, "type": {"type": ["string","null"], "x-enum-source": "follow_up_types"}, "message": {"type": ["string","null"]}, "suggested_after_hours": {"type": ["integer","null"]}}
+    },
+    "missing_information": {"type": "array", "items": {"type": "string"}},
+    "clarification_questions": {"type": "array", "items": {"type": "string"}},
+    "complaint_summary": {"type": "string"},
+    "agent_guidance": {"type": "array", "items": {"type": "string"}},
+    "injection_suspected": {"type": "boolean"},
+    "injection_notes": {"type": ["string","null"]}
+  }
+}
